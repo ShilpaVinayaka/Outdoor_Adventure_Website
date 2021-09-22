@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OutDoor Adventure</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<style>
+    :root {
+        --background-color: #ffffff;
+        --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+            Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+        --box-shadow-1: 0 0 5px rgb(105, 104, 104);
+        --content-box-shadow: hsl(0, 0%, 80%) 0 0 16px;
+
+        --text-color-1: #222222;
+        --text-color-2: white;
+
+        --main-color: #fb2056;
+        --background-color-2: #f7f7f7;
+
+        --footer: #191919;
+    }
+
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        background: var(--background-color);
+        font-family: var(--font-family);
+        margin: 0;
+        padding: 0;
+    }
+
+    .overlay-scrollbar::-webkit-scrollbar {
+        width: 9px;
+        height: 9px;
+    }
+
+    .scrollbar-hover::-webkit-scrollbar {
+        display: none;
+    }
+
+    .scrollbar-hover:hover::-webkit-scrollbar {
+        display: block;
+    }
+
+    .overlay-scrollbar:hover::-webkit-scrollbar {
+        display: block;
+    }
+
+    .overlay-scrollbar::-webkit-scrollbar-thumb {
+        background-color: rgba(0, 0, 0, 0.4);
+        border-radius: 10rem;
+        border: 1px solid var(--font-color-white);
+    }
+
+    .overlay-scrollbar::-webkit-scrollbar-track-piece:start {
+        background: transparent;
+    }
+
+    .overlay-scrollbar::-webkit-scrollbar-track-piece:start {
+        background: transparent;
+    }
+
+    .overlay-scrollbar::-webkit-scrollbar-track-piece:end {
+        background: transparent;
+    }
+
+    li {
+        list-style: none;
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    .logo {
+        height: 60px;
+        padding: 10px;
+    }
+
+    .logo img {
+        width: 180px;
+        height: auto;
+    }
+
+    .navbar {
+        display: flex;
+        flex-direction: row;
+        top: 0;
+        right: 0;
+        left: 0;
+        z-index: 100;
+        background: transparent;
+    }
+
+    .navbar-nav {
+        display: flex;
+        flex-direction: row;
+        padding-left: 30px;
+        margin-bottom: 0;
+        margin-top: 0;
+    }
+
+    .nav-item {
+        padding: 10px;
+    }
+
+    .nav-link {
+        float: left;
+        text-align: center;
+        padding: 8px 5px;
+        font-size: 17px;
+        color: #f7f7f7;
+        position: relative;
+        font-weight: 500;
+    }
+
+    .nav-link:hover {
+        color: #fb2056;
+    }
+
+    .active .nav-link {
+        color: #fb2056;
+    }
+
+    .nav-right {
+        margin-left: auto;
+        margin-right: 40px;
+    }
+
+    .btn .nav-link {
+        border: 2px solid var(--main-color);
+        background-color: var(--main-color);
+        border-radius: 20px;
+        padding: 8px 15px;
+        font-size: 0.8rem;
+    }
+
+    .btn .nav-link:hover {
+        color: #f7f7f7;
+    }
+
+    .nav-expand i {
+        visibility: hidden;
+    }
+
+    #mysidebar {
+        display: block;
+    }
+
+    .sidebar {
+        width: 0px;
+        height: 100vh;
+        position: fixed;
+        background-color: #ffffff;
+        box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 4px 1px;
+        overflow: hidden;
+        z-index: 100;
+        transition: width 0.5s;
+        font-weight: 500;
+        color: var(--text-color-1);
+        font-size: 1rem;
+        top: 0;
+    }
+
+    .nav-expand:hover .sidebar {
+        width: 230px;
+    }
+
+    .sidebar-nav {
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+    }
+
+    .sidebar-nav-item {
+        width: 100%;
+    }
+
+    .sidebar-nav-item .active {
+        color: white;
+        background: var(--main-color);
+    }
+
+    .sidebar-nav-item .active:hover {
+        color: white;
+        background: var(--main-color);
+    }
+
+    .sidebar-nav-link {
+        display: flex;
+        border-bottom: 1px solid rgb(223, 219, 219);
+    }
+
+    .sidebar-nav-link span {
+        min-width: 82px;
+        height: 50px;
+        position: relative;
+        padding: 20px;
+        transform: translate(1%, -15%);
+        display: flex;
+        justify-content: right;
+    }
+
+    .sidebar-nav-link:hover {
+        color: var(--text-color-1);
+        background: rgb(207, 205, 205);
+    }
+
+    .sidebar-nav-link .active {
+        color: var(--main-color);
+    }
+
+    .sidebar-expand .sidebar {
+        width: 185px;
+    }
+
+    .sidebar-expand .nav-item .nav-expand {
+        background-color: white;
+    }
+
+    .wrapper {
+        background: var(--main-content);
+        transition: margin-left 0.5s;
+        position: absolute;
+        top: 0;
+        z-index: -1;
+    }
+
+    .home {
+        top: 0;
+    }
+
+    .main-block img {
+        background-repeat: no-repeat;
+        overflow: hidden;
+        width: 100%;
+        height: 100%;
+        opacity: 0.9;
+        z-index: 100;
+    }
+
+    .main-block-content {
+        position: absolute;
+        top: 250px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        font-weight: 700;
+        font-size: 1.5rem;
+    }
+
+    .line {
+        padding-top: 10px;
+        background-color: transparent;
+        width: 100px;
+    }
+
+    .line::before {
+        content: "";
+        position: absolute;
+        width: 80px;
+        height: 3px;
+        background: var(--main-color);
+        transform: translateY((-5px));
+        transition: 0.2s;
+    }
+
+    .main-block-content .line-bar {
+        background-color: var(--main-color);
+        width: 100px;
+    }
+
+    .main-block-content h1 {
+        font-size: 3.5rem;
+        color: ghostwhite;
+    }
+
+    .main-block-content .btn {
+        border: 2px solid var(--main-color);
+        background-color: var(--main-color);
+        border-radius: 20px;
+        padding: 8px 20px;
+        color: ghostwhite;
+        font-weight: 700;
+        font-size: 0.7rem;
+    }
+
+    .quote {
+        background-color: rgb(218, 218, 218);
+        padding: 40px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+    }
+
+    .upcoming-events {
+        text-align: center;
+        padding-bottom: 10px;
+    }
+
+    .upcoming-events .line {
+        display: block;
+        margin: auto;
+        margin-right: 50%;
+        padding-bottom: 20px;
+    }
+
+    .events {
+        padding: 20px;
+        float: left;
+        justify-content: center;
+        text-align: center;
+        position: relative;
+    }
+
+    .events p {
+        text-align: center;
+        width: inherit;
+    }
+
+    .event-lists {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        overflow: hidden;
+    }
+
+    .events img {
+        width: 400px;
+        height: 300px;
+    }
+
+    .upcoming-events .btn {
+        border: 2px solid var(--main-color);
+        background-color: var(--main-color);
+        border-radius: 20px;
+        padding: 8px 20px;
+        color: ghostwhite;
+        font-weight: 700;
+        font-size: 0.7rem;
+    }
+
+    .explore-world {
+        display: flex;
+        color: #f7f7f7;
+        align-items: center;
+        justify-content: right;
+        flex-wrap: wrap;
+        font-size: 1.2rem;
+        margin-top: 10px;
+    }
+
+    .explore-world img {
+        width: 100%;
+        height: auto;
+    }
+
+    .explore-world-content {
+        position: absolute;
+        padding: 10px;
+        margin-left: 50%;
+    }
+
+    .explore-world-content .btn {
+        border: 2px solid var(--main-color);
+        background-color: var(--main-color);
+        border-radius: 20px;
+        padding: 8px 20px;
+        color: ghostwhite;
+        font-weight: 700;
+        font-size: 0.7rem;
+    }
+
+    .explore-world-content div {
+        padding: 20px;
+    }
+
+    .upcoming-tour {
+        display: flex;
+        padding: 20px;
+        margin-left: 14%;
+        margin-right: 10%;
+    }
+
+    .block-1 {
+        padding: 20px;
+        width: 50%;
+    }
+
+    .block-2 {
+        margin-top: 40px;
+        width: 100%;
+        margin-bottom: 90px;
+    }
+
+    .upcoming-tour .line {
+        display: block;
+        margin-right: 50%;
+        padding-bottom: 20px;
+    }
+
+    .upcoming-tour-content img {
+        width: 40%;
+        height: 50%;
+        float: left;
+        padding: 5px;
+    }
+
+    .upcoming-tour-content .btn {
+        border: 2px solid var(--main-color);
+        background-color: var(--main-color);
+        border-radius: 20px;
+        padding: 8px 20px;
+        color: ghostwhite;
+        font-weight: 700;
+        font-size: 0.7rem;
+    }
+
+    .footer {
+        margin-top: 20px;
+        background: var(--footer);
+        color: white;
+        text-align: center;
+        padding: 5px;
+
+    }
+
+
+    @media only screen and (max-width: 3001px) and (min-width: 902px) {
+        #mysidebar {
+            display: none;
+        }
+    }
+
+    @media only screen and (max-width: 901px) and (min-width: 400px) {
+        .nav-link {
+            display: none;
+        }
+
+        .nav-expand i {
+            visibility: visible;
+            margin-top: 20px;
+            font-size: 1.4rem;
+        }
+
+        .logo img {
+            margin-top: 10px;
+            height: 40px;
+            width: auto;
+        }
+
+        .nav-item {
+            padding: 0px;
+        }
+
+        .main-block-content {
+            position: absolute;
+            top: 120px;
+            font-size: 1.2rem;
+        }
+
+        .main-block-content {
+            padding: 0;
+        }
+
+        .main-block-content .line-bar {
+            background-color: var(--main-color);
+            width: 100px;
+        }
+
+        .main-block-content h1 {
+            font-size: 2.4rem;
+            color: ghostwhite;
+        }
+
+        .main-block-content .btn {
+            border: 2px solid var(--main-color);
+            background-color: var(--main-color);
+            border-radius: 20px;
+            padding: 8px 20px;
+            color: ghostwhite;
+            font-weight: 700;
+        }
+
+        .event-lists {
+            display: grid;
+            grid-template-columns: repeat(1, 1fr);
+            overflow: hidden;
+        }
+
+        .events img {
+            width: auto;
+            height: 300px;
+        }
+
+        .upcoming-events h1 {
+            font-size: 2.4rem;
+        }
+
+        .explore-world {
+            font-size: 0.9rem;
+
+        }
+
+        .explore-world-content div {
+            justify-content: right;
+            padding: 5px;
+        }
+
+        .explore-world-content h1 {
+            font-size: 1.5rem;
+        }
+
+        .upcoming-tour {
+            display: flex;
+            padding: 20px;
+            margin-left: 0%;
+            margin-right: 0%;
+        }
+
+        .upcoming-tour-content img {
+            width: 50%;
+            height: 40%;
+            float: left;
+            padding: 5px;
+        }
+
+        .block-1 {
+            padding: 20px;
+            width: 50%;
+        }
+
+        .block-2 {
+            margin-top: 40px;
+            width: 75%;
+        }
+
+        .upcoming-tour-content {
+            display: grid;
+
+        }
+    }
+
+    @media only screen and (max-width: 651px) and (min-width: 400px) {
+        .explore-world {
+            font-size: 0.9rem;
+
+        }
+
+        .explore-world-content div {
+            justify-content: right;
+            padding: 5px;
+        }
+
+        .explore-world-content h1 {
+            font-size: 1.5rem;
+        }
+
+        .explore-world-content {
+            position: absolute;
+            padding: 30px;
+            margin-left: 0%;
+        }
+
+        .upcoming-tour {
+            display: block;
+            padding: 20px;
+            margin-left: 0%;
+            margin-right: 0%;
+        }
+
+        .upcoming-tour-content img {
+            width: 50%;
+            height: auto;
+            padding: 5px;
+        }
+
+        .block-1 {
+            padding: 20px;
+            width: 100%;
+        }
+
+        .block-2 {
+            margin-top: 0px;
+            width: 100%;
+        }
+
+        .upcoming-tour h1 {
+            font-size: 1.5rem;
+        }
+    }
+
+    @media only screen and (max-width: 401px) {
+        .nav-link {
+            display: none;
+        }
+
+        .navbar {
+            background-color: white;
+            box-shadow: var(--box-shadow-1);
+        }
+
+        .nav-expand i {
+            visibility: visible;
+            margin-top: 20px;
+            font-size: 1.4rem;
+        }
+
+        .logo img {
+            margin-top: 10px;
+            height: 30px;
+            width: auto;
+        }
+
+        .nav-item {
+            padding: 0px;
+        }
+
+        .main-block-content {
+            position: absolute;
+            top: 70px;
+            font-size: 1rem;
+        }
+
+        .main-block-content {
+            padding: 0;
+        }
+
+        .main-block-content .line-bar {
+            background-color: var(--main-color);
+            width: 100px;
+        }
+
+        .main-block-content h1 {
+            font-size: 1.5rem;
+            color: ghostwhite;
+        }
+
+        .main-block-content .btn {
+            border: 2px solid var(--main-color);
+            background-color: var(--main-color);
+            border-radius: 20px;
+            padding: 8px 20px;
+            color: ghostwhite;
+            font-weight: 700;
+        }
+
+        .quote {
+            padding: 25px;
+        }
+
+        .event-lists {
+            display: grid;
+            grid-template-columns: repeat(1, 1fr);
+            overflow: hidden;
+        }
+
+        .events img {
+            width: 100%;
+            height: 200px;
+        }
+
+        .upcoming-events h1 {
+            font-size: 1.5rem;
+        }
+
+        .explore-world {
+            font-size: 0.9rem;
+
+        }
+
+        .explore-world-content div {
+            justify-content: right;
+            padding: 5px;
+        }
+
+        .explore-world-content h1 {
+            font-size: 1.5rem;
+        }
+
+        .explore-world-content {
+            position: absolute;
+            padding: 30px;
+            margin-left: 0%;
+        }
+
+        .upcoming-tour {
+            display: block;
+            padding: 20px;
+            margin-left: 0%;
+            margin-right: 0%;
+        }
+
+        .upcoming-tour-content img {
+            width: 100%;
+            height: auto;
+            float: left;
+            padding: 5px;
+        }
+
+        .block-1 {
+            padding: 20px;
+            width: 100%;
+        }
+
+        .block-2 {
+            margin-top: 0px;
+            width: 100%;
+        }
+
+        .upcoming-tour h1 {
+            font-size: 1.5rem;
+        }
+
+        .footer {
+            margin-top: 280%;
+            background: var(--footer);
+            color: white;
+            text-align: center;
+            padding: 5px;
+            font-size: 12px;
+        }
+
+        .wrapper {
+            background: var(--main-content);
+            transition: margin-left 0.5s;
+            position: absolute;
+            top: 60px;
+            z-index: -1;
+        }
+    }
+
+    @media only screen and (max-width: 281px) {
+
+        .main-block-content {
+            position: absolute;
+            top: 35px;
+            font-size: 1rem;
+        }
+
+        .events {
+            padding: 10px;
+        }
+
+        .explore-world {
+            font-size: 0.7rem;
+
+        }
+
+        .explore-world-content h1 {
+            font-size: 1rem;
+        }
+    }
+</style>
+
+<body class="overlay-scrollbar">
+    <!-- Navbar -->
+    <div class="navbar">
+        <ul class="navbar-nav">
+
+            <li class="nav-item">
+                <div class="logo">
+                    <img src="./Images/logo.png" alt="Outdoor Adventure">
+                </div>
+            </li>
+        </ul>
+        <ul class="navbar-nav nav-right">
+            <li class="nav-item active"><a class="nav-link" href="">Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="">About</a></li>
+            <li class="nav-item"><a class="nav-link" href="">Services</a></li>
+            <li class="nav-item"><a class="nav-link" href="">Projects</a></li>
+            <li class="nav-item"><a class="nav-link" href="">Contact</a></li>
+            <li class="nav-item btn"><a class="nav-link" href="">Take Action</a></li>
+            <li class="nav-item nav-expand">
+                <a id="nav-close">
+                    <i class="fa fa-bars" onclick="collapseSidebar()"></i>
+                </a>
+            </li>
+
+        </ul>
+    </div>
+    <!-- End of Navbar -->
+    <!-- SideBar -->
+
+    <div class="sidebar" id="mysidebar">
+        <ul class="sidebar-nav">
+            <li class="sidebar-nav-item">
+                <a href="" class="sidebar-nav-link active">
+                    <span>Home</span>
+                </a>
+            </li>
+            <li class="sidebar-nav-item">
+                <a href="" class="sidebar-nav-link">
+                    <span>About</span>
+                </a>
+            </li>
+            <li class="sidebar-nav-item">
+                <a href="" class="sidebar-nav-link">
+                    <span>Services</span>
+                </a>
+            </li>
+            <li class="sidebar-nav-item">
+                <a href="" class="sidebar-nav-link">
+                    <span>Projects</span>
+                </a>
+            </li>
+            <li class="sidebar-nav-item">
+                <a href="" class="sidebar-nav-link">
+                    <span>Contact</span>
+                </a>
+            </li>
+            <li class="sidebar-nav-item">
+                <a href="" class="sidebar-nav-link">
+                    <span>Take Action</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="wrapper">
+        <div class="main-block">
+            <div><img src="./Images/logo2.jpg" alt="">
+                <div class="main-block-content">
+                    <span>
+                        Explore The Colourful World
+                    </span>
+                    <div class="line"></div>
+                    <h1>A WONDERFUL GIFT</h1>
+                    <button class="btn">
+                        LEARN MORE
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="quote">
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur, deserunt!</p>
+            <span>-Adam Sendler</span>
+        </div>
+
+        <div class="upcoming-events">
+            <h1>UPCOMING EVENTS</h1>
+            <div class="line"></div>
+            <div class="event-lists">
+                <div class="events">
+                    <img src="./Images/mount_everest_trek.jpg" alt="">
+                    <h4>Everest Camp Trek</h4>
+                    <p>Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet consectetur
+                        adipisicing.</p>
+                    <button class="btn">LEARN MORE &#x2192</button>
+                </div>
+                <div class="events">
+                    <img src="./Images/walking_holidays.jpg" alt="">
+                    <h4>Walking Holidays</h4>
+                    <p>Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet consectetur
+                        adipisicing elit.</p>
+                    <button class="btn">LEARN MORE &#x2192</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="explore-world">
+            <div><img src="./Images/explore_world.jpg" alt=""></div>
+            <div class="explore-world-content">
+                <div>
+                    <h1>EXPLORE THE WORLD</h1>
+                </div>
+                <div>
+                    <span>
+                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Praesentium distinctio mollitia
+                        quisquam
+                        eos
+                        suscipit hic!
+                    </span>
+                </div>
+                <div>
+                    <button class="btn">LEARN MORE &#x2192</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="upcoming-tour">
+            <div class="upcoming-tour-content block-1">
+                <div>
+                    <h1>UPCOMING TOURS & DESTINATION</h1>
+                    <div class="line"></div>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Praesentium, nobis! Quaerat sit
+                        pariatur
+                        quo cum natus vero voluptatem vel molestiae, velit aperiam ipsum est officia qui unde
+                        consectetur
+                        odit labore.
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Praesentium, nobis! Quaerat sit
+                        pariatur
+                        quo cum natus vero voluptatem vel molestiae, velit aperiam ipsum est officia qui unde
+                        consectetur
+                        odit labore.
+                    </p>
+                    <div>
+                        <button class="btn">LEARN MORE &#x2192</button>
+                    </div>
+                </div>
+            </div>
+            <div class="upcoming-tour-content block-2">
+                <div>
+                    <img src="./Images/tour_3.jpg" alt="">
+                    <img src="./Images/tour_1.jpg" alt="">
+                    <img src="./Images/tour_2.jpg" alt="">
+                    <img src="./Images/tour_5.jpg" alt="">
+                    <img src="./Images/tour_6.jpg" alt="">
+                </div>
+            </div>
+        </div>
+        <div class="footer">
+            <p>
+                123 Fifth Avenue, NY 10160, New York, USA | Phone: 800-123-456 | Email: contact@example.com
+            </p>
+            <p>
+                Copyright &copy; 2021 Outdoor Adventure
+            </p>
+
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+    <script>
+        const body = document.getElementsByTagName('body')[0]
+
+        function collapseSidebar() {
+            body.classList.toggle('sidebar-expand')
+        }
+
+        var sidebar = document.getElementById("mysidebar")
+
+        window.onclick = function (e) {
+            if (e.target == sidebar) {
+                sidebar.style.display = "none";
+            }
+        }
+    </script>
+</body>
+
+</html>
